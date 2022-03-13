@@ -13,7 +13,9 @@ speedCPU = int(input("Instrucciones que el CPU es capaz de ejecutar a la vez: ")
 env = simpy.Environment()
 RAM = simpy.Container(env, init = ramQuantity ,capacity = ramQuantity)
 CPU = simpy.Resource(env, capacity = numCPU)
-seed = random.seed(100)
+seed = random.seed(10)
+promTime = 0
+standDev = 0
 
 for i in range(numProcess):
     arrival = random.expovariate(1.0/intervals)
@@ -23,4 +25,13 @@ for i in range(numProcess):
     
 input("Presione enter para iniciar la simulacion: ")
 env.run()
-print("\nTiempo promedio: %d" % (fc.getTotalTime()/numProcess))
+promTime = fc.getTotalTime()/numProcess
+print("\nTiempo promedio: %f segundos" % promTime)
+
+times = fc.getTimes()
+suma = 0
+for i in times:
+    suma += (i - promTime)**2
+ 
+stanDev = (suma/(numProcess-1))**0.5
+print("\nDesviacion estandar: %f segundos" % stanDev)

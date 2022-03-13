@@ -1,6 +1,10 @@
 totalTime = 0
+times = []
 def getTotalTime():
     return totalTime
+
+def getTimes():
+    return times
 
 def process(name, env, RAM, CPU, arrival, numIns, ramNeed, speedCPU, random):
     yield env.timeout(arrival)
@@ -36,5 +40,7 @@ def process(name, env, RAM, CPU, arrival, numIns, ramNeed, speedCPU, random):
     yield RAM.put(ramNeed)
     print("%s termino su ejecucion en el tiempo: %d. Nueva cantidad de memoria disponible: %d. Estado: TERMINATED" % (name, env.now, RAM.level))
     global totalTime
+    global times
+    times.append(env.now - arrivalTime)
     totalTime += env.now - arrivalTime
-    print("Tiempo que duro la ejecucion: %d" %(env.now - arrivalTime))
+    print("Tiempo que duro la ejecucion: %d segundos" %(env.now - arrivalTime))
